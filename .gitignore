@@ -1,0 +1,28 @@
+# Secrets - never commit a real key
+.env
+
+# Session outputs and the LangGraph checkpoint database
+runs/
+
+# Evaluation output
+eval/report.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Editor / tooling local settings
+.claude/
+.idea/
+.vscode/
+
+# OS cruft
+.DS_Store
+Thumbs.db

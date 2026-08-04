@@ -1,0 +1,176 @@
+{
+  "id": "fdm_stakeholder",
+  "description": "The primary ground-truth persona. A cooperative production engineer describing the FDM 3D-printer twin from Bitencourt et al. (2025), section 4. Reaches all twelve published requirements, carries both seeded paper defects, and includes one fabricated design goal for V1 to intercept.",
+  "expects": {
+    "requirements": 12,
+    "coverage": "4/4",
+    "defects": ["unverifiable_predicate", "duplicate_obligation"],
+    "fabricated_candidates_rejected": 1,
+    "fabricated_goals_committed": 0
+  },
+  "purpose_record": {
+    "rationale": "Failed prints currently run to completion unnoticed, wasting filament and machine time.",
+    "user_roles": ["print-shop operator"],
+    "context_of_use": "During every print job, on the shop floor."
+  },
+  "purpose_answer": "We run a bank of FDM printers and right now nobody knows a print has failed until someone walks past and sees the mess. I want something that watches every print job, shows the operator what the machine is doing, and tells them when the extrusion has gone wrong - clogs, that sort of thing - while the job is still running.",
+  "maturity": {
+    "expected_level": "Replication",
+    "answer": "Yes, that is exactly it.",
+    "reasoning": "The purpose needs the twin to model how the printer behaves and act on what it finds during the job, which is beyond simply representing the machine on screen, but it stops short of forecasting failures before they occur.",
+    "description": "The twin will watch every print job as it runs, show the operator the readings coming off the printer, build a live picture of what the machine is physically doing, and work out from those readings when the extrusion has gone wrong so it can act. It will not forecast a failure before it starts, and it will not tune your print settings on its own."
+  },
+  "turns": [
+    {
+      "_topic": "data_collection_integration",
+      "answer": "Start with what comes off the machine. The electric current should be collected continuously - that is how we know whether the printer is on at all. During a print job we need temperature, position and vibration collected continuously for every job. All of the data elements have to be retained for every print job. The bed and nozzle temperature readings need to be within plus or minus 2.5 degrees C of target, the position in XYZ within plus or minus 10% of target, and 100% of what the printer sends has to actually arrive in the twin.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The data for the electric current shall be collected continuously",
+            "type": "functional",
+            "dimension": "data_collection_integration",
+            "rationale": "Tells the operator whether the printer is powered and available."
+          },
+          {
+            "text": "The data for temperature, position, and vibration shall be collected continuously for every print job",
+            "type": "functional",
+            "dimension": "data_collection_integration",
+            "rationale": "These are the readings that describe what the machine is doing during a job."
+          },
+          {
+            "text": "All data elements shall be retained for every print job",
+            "type": "functional",
+            "dimension": "data_collection_integration",
+            "rationale": "Needed to look back at a job after the fact."
+          },
+          {
+            "text": "The DT shall collect bed and nozzle temperature continuously",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": "Accuracy of +/- 2.5 C from target",
+            "rationale": "Temperature drift is what ruins a PLA print."
+          },
+          {
+            "text": "The DT shall collect the position in XYZ",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": "Accuracy of +/- 10% from target",
+            "rationale": "The head position has to line up with what the file asked for."
+          },
+          {
+            "text": "The data collected from the physical system shall be integrated with the DT",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": "100% of data sent is received by the DT",
+            "rationale": "A reading that never arrives is a reading we do not have."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "virtual_environment",
+      "answer": "The operator needs to see the readings live on a screen while the job runs. We also want a view of the head and the bed moving in XYZ so they can tell at a glance that the machine is doing what the file said it should.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall provide real-time visualization of the data elements",
+            "type": "functional",
+            "dimension": "virtual_environment",
+            "rationale": "The operator watches the readings while the job runs."
+          },
+          {
+            "text": "The DT shall provide real-time visualization of the model physics when moving in XYZ",
+            "type": "functional",
+            "dimension": "virtual_environment",
+            "rationale": "Lets the operator see at a glance that the motion matches the file."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "intelligence_layer",
+      "_note": "This answer contains no numbers at all. The extraction below deliberately attaches an invented 95% accuracy target to the clog-detection requirement so that V1 has something real to intercept.",
+      "answer": "It should work out from the vibration data when the extruder has clogged, and it should be able to tell from the electric current whether the printer is actually running a job or sitting idle.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall detect clogs using vibration data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": "Accuracy >=95%",
+            "ref": "this",
+            "rationale": "SEEDED FABRICATION - the stakeholder said no number in this turn."
+          },
+          {
+            "text": "The DT shall detect operation status using electric current data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": null,
+            "rationale": "Distinguishes a running job from an idle machine."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "fabrication recovery - the agent asks the human for the value it refused to invent",
+      "answer": "Clog detection has to be right at least 90% of the time. The printer-running check needs the same, 90%.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall detect clogs using vibration data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": "Accuracy >=90%",
+            "rationale": "Below that the operator stops trusting the alerts."
+          },
+          {
+            "goal_target_text": "The DT shall detect operation status using electric current data",
+            "dimension": "intelligence_layer",
+            "designGoal": "Accuracy >=90%"
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "automation_feedback",
+      "answer": "When it spots a clog it should pause the print, otherwise we waste a whole roll of filament. And we do lose readings when the network hiccups - the twin should minimize data loss.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall pause the operation when clogs are identified",
+            "type": "functional",
+            "dimension": "automation_feedback",
+            "rationale": "Stops a failed print from running to the end of the roll."
+          },
+          {
+            "text": "The system shall minimize data loss",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": null,
+            "rationale": "Readings go missing when the network drops."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "design goal for the minimize-data-loss requirement",
+      "answer": "We can live with losing up to 10% of the readings, but no more than that.",
+      "extract": {
+        "requirements": [
+          {
+            "goal_target_text": "The system shall minimize data loss",
+            "dimension": "data_collection_integration",
+            "designGoal": "data loss <=10%"
+          }
+        ]
+      }
+    }
+  ],
+  "flag_answers": [
+    "Those are two separate obligations. The first says what we capture during a job; the second sets how close the temperature reading has to be. Keep both.",
+    "Also two separate ones - keep both. A general statement about collecting readings is not an accuracy target for the head position.",
+    "Different things. One is the numbers on a screen, the other is the moving picture of the head and bed. Keep both."
+  ],
+  "fallback_answer": "That is everything I can think of."
+}

@@ -1,0 +1,162 @@
+{
+  "id": "no_numbers",
+  "description": "V1 under pressure. A stakeholder who describes everything in adjectives and never says a number, against a model scripted to invent one on every performance requirement. Measures validator interception rate: every fabricated candidate must be rejected pre-commit, so the fabricated-goal rate stays at zero. Also shows the real cost of a fabrication - the requirement is rejected with its invented number and has to be re-elicited from the human.",
+  "expects": {
+    "fabricated_candidates": 4,
+    "fabricated_candidates_rejected": 4,
+    "fabricated_goals_committed": 0,
+    "interception_rate": 1.0,
+    "open_flags_at_hitl3": 4
+  },
+  "purpose_record": {
+    "rationale": "Prints fail and nobody notices until the end.",
+    "user_roles": ["operator"],
+    "context_of_use": "Every print job."
+  },
+  "purpose_answer": "I want the twin to keep a close eye on the printers and let us know quickly when something is going wrong.",
+  "maturity": {
+    "expected_level": "Replication",
+    "answer": "Yes.",
+    "reasoning": "Detecting a fault during a job needs the twin to model behaviour.",
+    "description": "The twin will watch each job, show you what the machine is doing, and work out when the extrusion has gone wrong. It will not predict failures in advance and it will not change your settings."
+  },
+  "turns": [
+    {
+      "_topic": "data_collection_integration - no numbers said; the model invents two",
+      "answer": "We need the temperature captured continuously and it has to be accurate. Nothing should get lost on the way in either.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall collect bed and nozzle temperature continuously",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": "Accuracy of +/- 1 C from target",
+            "rationale": "SEEDED FABRICATION - no number appears in this turn."
+          },
+          {
+            "text": "The data collected from the physical system shall be integrated with the DT",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": "99.9% of data sent is received by the DT",
+            "rationale": "SEEDED FABRICATION - no number appears in this turn."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "recovery for the temperature requirement - the human still has no figure",
+      "answer": "As close as you can reasonably get it. I do not have a figure for you.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall collect bed and nozzle temperature continuously",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": null,
+            "status": "needs_clarification",
+            "rationale": "The stakeholder has never measured the reading error."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "recovery for the integration requirement - still no figure",
+      "answer": "It should basically all arrive. I could not put a percentage on it.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The data collected from the physical system shall be integrated with the DT",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": null,
+            "status": "needs_clarification",
+            "rationale": "No completeness target was ever set."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "virtual_environment - nothing numeric needed here",
+      "answer": "Show the readings on a screen while the job runs.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall provide real-time visualization of the data elements",
+            "type": "functional",
+            "dimension": "virtual_environment",
+            "rationale": "So the operator can see the job."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "intelligence_layer - no numbers said; the model invents 98%",
+      "answer": "It has to be really reliable at spotting a clog. That is the whole point of it.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall detect clogs using vibration data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": "Accuracy >=98%",
+            "rationale": "SEEDED FABRICATION - no number appears in this turn."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "recovery for clog detection - still no figure",
+      "answer": "High. I would want it to be trustworthy but I cannot give you a percentage.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall detect clogs using vibration data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": null,
+            "status": "needs_clarification",
+            "rationale": "No accuracy target could be given."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "automation_feedback - no numbers said; the model invents a response time",
+      "answer": "When it sees a clog it should pause the print promptly.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall pause the operation when clogs are identified",
+            "type": "performance",
+            "dimension": "automation_feedback",
+            "designGoal": "Response time <=2 seconds",
+            "rationale": "SEEDED FABRICATION - no number appears in this turn."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "recovery for the pause response time - still no figure",
+      "answer": "Quickly enough that we do not waste the roll. I cannot give you a time.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall pause the operation when clogs are identified",
+            "type": "performance",
+            "dimension": "automation_feedback",
+            "designGoal": null,
+            "status": "needs_clarification",
+            "rationale": "No target response time was ever given."
+          }
+        ]
+      }
+    }
+  ],
+  "flag_answers": [
+    "I still cannot give you a number for that one. Leave it open and we will measure it later.",
+    "Same answer - no figure from me yet. Leave it open.",
+    "No number, sorry. Flag it for the trial run.",
+    "Leave it as it is. We will set a target once we have a baseline."
+  ],
+  "fallback_answer": "I do not have any numbers for you."
+}

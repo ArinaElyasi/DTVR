@@ -1,0 +1,83 @@
+{
+  "id": "evasive",
+  "description": "Q3 - the attempt cap. A stakeholder who will not engage with one topic. The agent must ask at most three times, park the dimension with a recorded reason, and carry on rather than deadlock.",
+  "expects": {
+    "edge_rule": "Q3",
+    "parked_dimensions": ["virtual_environment"],
+    "attempts_on_parked_dimension": 3
+  },
+  "purpose_record": {
+    "rationale": "Scrap from unnoticed failed prints.",
+    "user_roles": ["line supervisor"],
+    "context_of_use": "During production runs."
+  },
+  "purpose_answer": "We want to keep an eye on the printers so we stop wasting material on prints that have already failed.",
+  "maturity": {
+    "expected_level": "Replication",
+    "answer": "Fine.",
+    "reasoning": "The purpose needs the twin to interpret machine behaviour and act on it.",
+    "description": "The twin will watch each job, show you the readings, and work out when the extrusion has gone wrong. It will not predict a failure before it happens and it will not change your settings."
+  },
+  "turns": [
+    {
+      "_topic": "data_collection_integration - answered normally",
+      "answer": "Collect the nozzle and bed temperature continuously during every print job.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall collect bed and nozzle temperature continuously",
+            "type": "functional",
+            "dimension": "data_collection_integration",
+            "rationale": "Temperature is the reading that matters most to us."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "virtual_environment - attempt 1, no usable content",
+      "answer": "That is really a question for someone else, honestly.",
+      "extract": { "requirements": [] }
+    },
+    {
+      "_topic": "virtual_environment - attempt 2, still nothing",
+      "answer": "I would not want to say. Whatever is normal for this kind of thing.",
+      "extract": { "requirements": [] }
+    },
+    {
+      "_topic": "virtual_environment - attempt 3, still nothing. The cap trips here.",
+      "answer": "Look, I really cannot help you with that part.",
+      "extract": { "requirements": [] }
+    },
+    {
+      "_topic": "intelligence_layer",
+      "answer": "It should tell us from the vibration when the extruder has clogged, and it has to be right at least 90% of the time.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall detect clogs using vibration data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": "Accuracy >=90%",
+            "rationale": "Below that nobody trusts the alert."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "automation_feedback",
+      "answer": "It should pause the print when it finds a clog.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall pause the operation when clogs are identified",
+            "type": "functional",
+            "dimension": "automation_feedback",
+            "rationale": "Stops the machine wasting the rest of the roll."
+          }
+        ]
+      }
+    }
+  ],
+  "flag_answers": ["Keep both - they are different things."],
+  "fallback_answer": "I have nothing to add."
+}

@@ -1,0 +1,45 @@
+{
+  "id": "quitter",
+  "description": "Q2 - stopping early. The stakeholder types the stop keyword partway through. Whatever was captured must still be written out, and both output files must be marked PARTIAL prominently so nobody mistakes a half-finished interview for a requirements document.",
+  "expects": {
+    "edge_rule": "Q2",
+    "status": "partial",
+    "uncovered_dimensions_remain": true
+  },
+  "purpose_record": {
+    "rationale": "Called into a meeting mid-interview.",
+    "user_roles": ["operator"],
+    "context_of_use": "Shop floor."
+  },
+  "purpose_answer": "We want to watch the printers and catch failed prints early. The operators would use it while jobs are running.",
+  "maturity": {
+    "expected_level": "Replication",
+    "answer": "Yes, that is right.",
+    "reasoning": "Catching a failure during the job requires modelling behaviour.",
+    "description": "The twin will watch each job, show you the readings, and work out when the extrusion has gone wrong. It will not predict failures before they start and it will not change your settings."
+  },
+  "turns": [
+    {
+      "_topic": "data_collection_integration - answered properly",
+      "answer": "Collect the nozzle and bed temperature continuously during every print job, within plus or minus 2.5 degrees C of target.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall collect bed and nozzle temperature continuously",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": "Accuracy of +/- 2.5 C from target",
+            "rationale": "Temperature drift ruins a print."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "virtual_environment - the stakeholder is called away here",
+      "answer": "stop",
+      "extract": { "requirements": [] }
+    }
+  ],
+  "flag_answers": ["stop"],
+  "fallback_answer": "stop"
+}

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dtv-rea"
+version = "0.1.0"
+description = "DTV Requirements Agent - an interviewing agent that elicits digital-twin requirements and never invents a number."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "DTV-REA project" }]
+keywords = ["digital-twin", "requirements-engineering", "langgraph", "llm"]
+
+# Version ranges, not exact pins: the same file must resolve on macOS, Linux
+# and Windows. Every dependency below ships pure-Python or prebuilt wheels, so
+# `pip install` never needs a C compiler.
+dependencies = [
+    "langgraph>=1.0,<2.0",
+    "langgraph-checkpoint-sqlite>=3.0,<4.0",
+    "langchain-groq>=1.0,<2.0",
+    "pydantic>=2.7,<3.0",
+    "tenacity>=8.2,<10.0",
+    "python-dotenv>=1.0,<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0,<10.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["dtv_rea*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]

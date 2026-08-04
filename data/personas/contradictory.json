@@ -1,0 +1,89 @@
+{
+  "id": "contradictory",
+  "description": "V5 - maturity consistency. The stakeholder rules a topic out, then later states a requirement that lands squarely in it. The agent must flag the contradiction, surface both statements, and let the human say which one stands. It must never silently drop either.",
+  "expects": {
+    "flags": ["maturity_inconsistency"],
+    "not_applicable_then_contradicted": "intelligence_layer"
+  },
+  "purpose_record": {
+    "rationale": "Operators want visibility, management has not agreed to automation.",
+    "user_roles": ["operator"],
+    "context_of_use": "During print jobs."
+  },
+  "purpose_answer": "I want to see what the printers are doing while they run. The operators will use it from the shop floor.",
+  "maturity": {
+    "expected_level": "Representation",
+    "answer": "That is about right for now.",
+    "reasoning": "The stated purpose is visibility only, with no request for the twin to work anything out.",
+    "description": "The twin will collect the readings from the machine and show them to you as the job runs. It will not work out on its own whether anything has gone wrong, and it will not touch the machine."
+  },
+  "turns": [
+    {
+      "_topic": "data_collection_integration",
+      "answer": "Collect temperature, position and vibration continuously for every print job.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The data for temperature, position, and vibration shall be collected continuously for every print job",
+            "type": "functional",
+            "dimension": "data_collection_integration",
+            "rationale": "These describe what the machine is doing."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "virtual_environment",
+      "answer": "Show the readings live on a screen.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall provide real-time visualization of the data elements",
+            "type": "functional",
+            "dimension": "virtual_environment",
+            "rationale": "The operator watches the readings."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "intelligence_layer - explicitly ruled out by the stakeholder",
+      "answer": "No, we do not want it working anything out on its own. Just show us the numbers and let the operator judge. That whole idea does not apply to us.",
+      "extract": {
+        "requirements": [],
+        "not_applicable": [
+          {
+            "dimension": "intelligence_layer",
+            "quote": "we do not want it working anything out on its own"
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "automation_feedback - and here comes the contradiction",
+      "answer": "When it detects a clog from the vibration it should pause the print. That would save us a lot of filament.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall pause the operation when clogs are identified",
+            "type": "functional",
+            "dimension": "automation_feedback",
+            "rationale": "Saves filament on a failed print."
+          },
+          {
+            "text": "The DT shall detect clogs using vibration data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": null,
+            "rationale": "Pausing on a clog requires the twin to identify the clog first."
+          }
+        ]
+      }
+    }
+  ],
+  "flag_answers": [
+    "Good catch. If it has to pause on a clog then it does have to work the clog out, so that later statement stands - drop what I said before.",
+    "Keep both - they are different things."
+  ],
+  "fallback_answer": "Nothing more from me."
+}

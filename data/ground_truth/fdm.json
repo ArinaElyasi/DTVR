@@ -1,0 +1,134 @@
+{
+  "id": "fdm",
+  "title": "FDM 3D-printer digital twin (LulzBot TAZ Workhorse)",
+  "source": {
+    "citation": "Bitencourt, J. et al. (2025). Do you trust digital twins? A framework to support the development of trusted digital twins through verification and validation. International Journal of Production Research.",
+    "doi": "10.1080/00207543.2025.2524516",
+    "figure": "Figure 4 - DT requirements",
+    "note": "Requirement texts, types, verification methods and design goals are transcribed verbatim from Figure 4 of the published paper. The 'dimension' field is not in the paper; it is this project's mapping of each requirement onto the four DTV section 3.2 requirement dimensions."
+  },
+  "purpose": "Provide a scalable environment that can monitor, visualize, and provide diagnostic and feedback services for every print job performed in the FDM machine, assisting the operator in identifying anomalies in the extruding process during the operation.",
+  "maturity_level": "Replication",
+  "requirements": [
+    {
+      "id": "UR1.1",
+      "name": "Data Collection (Idle)",
+      "text": "The data for the electric current shall be collected continuously",
+      "type": "functional",
+      "dimension": "data_collection_integration",
+      "verifyMethod": "Inspection",
+      "designGoal": null
+    },
+    {
+      "id": "UR1.2",
+      "name": "Data Collection (Printing)",
+      "text": "The data for temperature, position, and vibration shall be collected continuously for every print job",
+      "type": "functional",
+      "dimension": "data_collection_integration",
+      "verifyMethod": "Inspection",
+      "designGoal": null
+    },
+    {
+      "id": "UR1.3",
+      "name": "Data Storage",
+      "text": "All data elements shall be retained for every print job",
+      "type": "functional",
+      "dimension": "data_collection_integration",
+      "verifyMethod": "Inspection",
+      "designGoal": null
+    },
+    {
+      "id": "UR1.4",
+      "name": "Visualization",
+      "text": "The DT shall provide real-time visualization of the data elements",
+      "type": "functional",
+      "dimension": "virtual_environment",
+      "verifyMethod": "Inspection",
+      "designGoal": null
+    },
+    {
+      "id": "UR1.5",
+      "name": "Physics Model",
+      "text": "The DT shall provide real-time visualization of the model physics when moving in XYZ",
+      "type": "functional",
+      "dimension": "virtual_environment",
+      "verifyMethod": "Inspection",
+      "designGoal": null
+    },
+    {
+      "id": "UR1.6",
+      "name": "Feedback",
+      "text": "The DT shall pause the operation when clogs are identified",
+      "type": "functional",
+      "dimension": "automation_feedback",
+      "verifyMethod": "Inspection",
+      "designGoal": null
+    },
+    {
+      "id": "UR1.7",
+      "name": "Temperature",
+      "text": "The DT shall collect bed and nozzle temperature continuously",
+      "type": "performance",
+      "dimension": "data_collection_integration",
+      "verifyMethod": "Test",
+      "designGoal": "Accuracy of +/- 2.5 C from target"
+    },
+    {
+      "id": "UR1.8",
+      "name": "Position",
+      "text": "The DT shall collect the position in XYZ",
+      "type": "performance",
+      "dimension": "data_collection_integration",
+      "verifyMethod": "Test",
+      "designGoal": "Accuracy of +/- 10% from target"
+    },
+    {
+      "id": "UR1.9",
+      "name": "Extrusion Pattern Detection",
+      "text": "The DT shall detect clogs using vibration data",
+      "type": "performance",
+      "dimension": "intelligence_layer",
+      "verifyMethod": "Test",
+      "designGoal": "Accuracy >=90%"
+    },
+    {
+      "id": "UR1.10",
+      "name": "Operation Status",
+      "text": "The DT shall detect operation status using electric current data",
+      "type": "performance",
+      "dimension": "intelligence_layer",
+      "verifyMethod": "Test",
+      "designGoal": "Accuracy >=90%"
+    },
+    {
+      "id": "UR1.11",
+      "name": "Data Loss",
+      "text": "The system shall minimize data loss",
+      "type": "performance",
+      "dimension": "data_collection_integration",
+      "verifyMethod": "Test",
+      "designGoal": "data loss <=10%"
+    },
+    {
+      "id": "UR1.12",
+      "name": "Data Integration",
+      "text": "The data collected from the physical system shall be integrated with the DT",
+      "type": "performance",
+      "dimension": "data_collection_integration",
+      "verifyMethod": "Test",
+      "designGoal": "100% of data sent is received by the DT"
+    }
+  ],
+  "seeded_defects": [
+    {
+      "code": "unverifiable_predicate",
+      "requirements": ["UR1.11"],
+      "explanation": "UR1.11 as published says 'minimize', which no test can pass or fail. The agent must flag it at the moment the stakeholder states it without a number, and the number must then come from the stakeholder."
+    },
+    {
+      "code": "duplicate_obligation",
+      "requirements": ["UR1.2", "UR1.7"],
+      "explanation": "UR1.2 obliges continuous collection of temperature, position and vibration; UR1.7 obliges continuous collection of bed and nozzle temperature. The same obligation is carried twice. A human must decide whether they are one thing or two - the agent never merges."
+    }
+  ]
+}

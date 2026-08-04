@@ -1,0 +1,98 @@
+{
+  "id": "dont_know",
+  "description": "Q1 - 'I don't know' to a number. The requirement must be kept with status needs_clarification and designGoal null, and the interview must move on rather than press or invent a value.",
+  "expects": {
+    "edge_rule": "Q1",
+    "needs_clarification_requirements": 1,
+    "fabricated_goals_committed": 0
+  },
+  "purpose_record": {
+    "rationale": "Nobody has measured this process before.",
+    "user_roles": ["process engineer"],
+    "context_of_use": "New line, still being characterised."
+  },
+  "purpose_answer": "This is a new line and we have never instrumented it. I want to see what the machine is doing and get told when a print goes wrong.",
+  "maturity": {
+    "expected_level": "Replication",
+    "answer": "Yes, that sounds right.",
+    "reasoning": "Detecting a fault during the job requires modelling behaviour, not just displaying readings.",
+    "description": "The twin will show you the readings from the machine as the job runs and work out when something has gone wrong. It will not forecast problems ahead of time and it will not adjust the machine itself."
+  },
+  "turns": [
+    {
+      "_topic": "data_collection_integration",
+      "answer": "Collect the nozzle and bed temperature continuously for every print job.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall collect bed and nozzle temperature continuously",
+            "type": "performance",
+            "dimension": "data_collection_integration",
+            "designGoal": null,
+            "rationale": "Temperature is the first thing we want to see."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "the agent asks for the temperature accuracy - and gets nothing",
+      "answer": "I honestly do not know. We have never measured how far off the readings are, so I would only be making a number up.",
+      "extract": {
+        "requirements": [
+          {
+            "goal_target_text": "The DT shall collect bed and nozzle temperature continuously",
+            "dimension": "data_collection_integration",
+            "designGoal": null,
+            "status": "needs_clarification"
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "virtual_environment",
+      "answer": "The operator needs to see the readings live on a screen while the job runs.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall provide real-time visualization of the data elements",
+            "type": "functional",
+            "dimension": "virtual_environment",
+            "rationale": "So the operator can watch the job."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "intelligence_layer",
+      "answer": "It should spot a clog from the vibration data. No idea what accuracy is achievable yet.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall detect clogs using vibration data",
+            "type": "performance",
+            "dimension": "intelligence_layer",
+            "designGoal": null,
+            "status": "needs_clarification",
+            "rationale": "We have no baseline to set a target from yet."
+          }
+        ]
+      }
+    },
+    {
+      "_topic": "automation_feedback",
+      "answer": "Pause the print when it finds a clog.",
+      "extract": {
+        "requirements": [
+          {
+            "text": "The DT shall pause the operation when clogs are identified",
+            "type": "functional",
+            "dimension": "automation_feedback",
+            "rationale": "Saves the rest of the filament."
+          }
+        ]
+      }
+    }
+  ],
+  "flag_answers": ["Keep both - they are different things."],
+  "fallback_answer": "Still do not know, sorry."
+}

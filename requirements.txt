@@ -1,0 +1,20 @@
+# DTV-REA dependencies.
+#
+# Install with:   python -m pip install -r requirements.txt
+#
+# These are version RANGES rather than exact pins on purpose: the identical
+# file has to resolve on macOS, Linux and Windows, on Python 3.11 through 3.14.
+# Every package here ships as a pure-Python wheel or has prebuilt wheels for all
+# three operating systems, so installing never requires a C compiler or any
+# build tooling.
+
+langgraph>=1.0,<2.0
+langgraph-checkpoint-sqlite>=3.0,<4.0
+langchain-groq>=1.0,<2.0
+pydantic>=2.7,<3.0
+tenacity>=8.2,<10.0
+python-dotenv>=1.0,<2.0
+
+# Test runner. Included here so that a single install command is enough to run
+# `python -m pytest` as described in the README.
+pytest>=8.0,<10.0
