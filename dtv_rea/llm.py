@@ -13,7 +13,7 @@ Two implementations:
     "the deterministic core works offline" checkable rather than aspirational.
 
 :class:`GroqModel`
-    Llama 3.3 70B on Groq (see :mod:`dtv_rea.groq_model`, imported lazily so
+    A Groq-hosted model (see :mod:`dtv_rea.groq_model`, imported lazily so
     that nothing here requires ``langchain-groq`` to be importable offline).
 """
 
@@ -130,7 +130,7 @@ class CallLogger:
 
 
 class StubModel:
-    """A deterministic stand-in for Llama 3.3.
+    """A deterministic stand-in for the hosted model.
 
     Questions are templated, extractions come from the persona script. Given
     the same persona it produces byte-identical runs, which is what lets the

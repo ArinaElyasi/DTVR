@@ -379,8 +379,8 @@ def _render_limitations() -> list[str]:
         "",
         "- **In stub mode the model is scripted.** A stub run proves the "
         "deterministic core - routing, validation, edge rules, output - and "
-        "proves nothing about how Llama 3.3 actually behaves. Only the live "
-        "run measures the model.",
+        f"proves nothing about how {MODEL_NAME} actually behaves. Only the "
+        "live run measures the model.",
         "",
     ]
 

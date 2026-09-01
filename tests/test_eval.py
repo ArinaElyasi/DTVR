@@ -13,7 +13,12 @@ from pathlib import Path
 import pytest
 
 from dtv_rea.persona import PersonaError, PersonaScript
-from dtv_rea.settings import ATTEMPT_CAP, DIMENSIONS, ground_truth_dir
+from dtv_rea.settings import (
+    ATTEMPT_CAP,
+    DIMENSIONS,
+    MODEL_NAME,
+    ground_truth_dir,
+)
 
 from eval.metrics import (
     coverage_completeness,
@@ -384,7 +389,8 @@ def test_the_report_says_a_stub_run_measures_the_core_not_the_model(
     scored: dict,
 ) -> None:
     report = render_report(list(scored.values()), use_stub=True)
-    assert "proves nothing about how Llama 3.3 actually behaves" in report
+    assert "proves nothing about how" in report
+    assert MODEL_NAME in report
 
 
 def test_the_harness_exits_zero_when_nothing_was_fabricated(tmp_path: Path) -> None:

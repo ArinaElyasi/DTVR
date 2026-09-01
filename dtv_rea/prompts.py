@@ -3,7 +3,8 @@
 **No RAG. Full context stuffing.** The knowledge base is small and fixed - the
 4R level definitions, the four requirement dimensions, a summary of DTV
 sections 3.1-3.2, the three-layer conceptual pattern, and the worked FDM
-exemplar. Roughly ten pages against Llama 3.3's 128k context window.
+exemplar. Roughly ten pages, comfortably inside the context window of any
+model this agent would sensibly be pointed at.
 
 Why not a vector store: retrieval adds a *silent* failure mode. If the 4R
 definitions fail to retrieve on the very turn the agent proposes a maturity

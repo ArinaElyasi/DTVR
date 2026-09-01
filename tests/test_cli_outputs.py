@@ -401,3 +401,59 @@ def test_a_failed_live_run_tells_the_user_how_to_resume(
     output = capsys.readouterr().out
     assert "Nothing you have already answered is lost." in output
     assert "--session boom --resume" in output
+
+
+def test_a_retired_model_is_explained_as_a_model_problem_not_a_key_problem() -> None:
+    """Groq retired llama-3.3-70b-versatile on 2026-08-16.
+
+    The 404 it returns reads like an access failure, and the obvious guess -
+    "my key must be bad" - is wrong and wastes time. The message has to say so.
+    """
+    from dtv_rea.cli import explain_failure
+    from dtv_rea.settings import MODEL_NAME
+
+    lines = explain_failure(
+        _ApiError(
+            404,
+            "The model `llama-3.3-70b-versatile` does not exist or you do not "
+            "have access to it.",
+        )
+    )
+    text = " ".join(lines)
+
+    assert "no longer serves the model" in text
+    assert "not a problem with your API key" in text
+    assert "will not fix it" in text
+    assert "DTV_REA_MODEL=" in text          # the actual one-line fix
+    assert MODEL_NAME in text                 # what it is currently set to
+    assert "JSON mode" in text                # the constraint on any replacement
+
+
+def test_the_model_is_configurable_without_touching_code(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A provider retiring a model must not require a code change."""
+    import importlib
+
+    import dtv_rea.settings as settings
+
+    monkeypatch.setenv("DTV_REA_MODEL", "openai/gpt-oss-20b")
+    reloaded = importlib.reload(settings)
+    try:
+        assert reloaded.MODEL_NAME == "openai/gpt-oss-20b"
+    finally:
+        monkeypatch.delenv("DTV_REA_MODEL", raising=False)
+        importlib.reload(settings)
+
+
+def test_the_default_model_is_one_groq_currently_serves() -> None:
+    """Guards against the default silently rotting again.
+
+    Offline check: the default must at least not be the model that is known to
+    be decommissioned. Whether it is live is a question only the network can
+    answer, and the suite deliberately never asks it.
+    """
+    from dtv_rea.settings import MODEL_NAME
+
+    assert MODEL_NAME != "llama-3.3-70b-versatile"
+    assert MODEL_NAME == "openai/gpt-oss-120b"

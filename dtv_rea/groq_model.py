@@ -1,4 +1,8 @@
-"""Llama 3.3 70B on Groq - the only network dependency (spec section 1.5).
+"""The Groq-hosted model - the only network dependency (spec section 1.5).
+
+Which model is a setting, not a fact about this file: see ``MODEL_NAME`` in
+:mod:`dtv_rea.settings`, overridable with ``DTV_REA_MODEL``. The requirement
+this module places on it is JSON mode, because every extraction uses it.
 
 Configuration, exactly as specified:
 
@@ -292,7 +296,7 @@ _with_backoff = retry(
 
 
 class GroqModel:
-    """:class:`~dtv_rea.llm.ModelPort` backed by Llama 3.3 70B on Groq."""
+    """:class:`~dtv_rea.llm.ModelPort` backed by a Groq-hosted model."""
 
     name = MODEL_NAME
 

@@ -133,6 +133,24 @@ def explain_failure(error: BaseException) -> list[str]:
         ]
         return lines
 
+    if status == 404 or "model_not_found" in text or "does not exist" in text:
+        return [
+            f"Groq no longer serves the model this agent is set to use "
+            f"({MODEL_NAME}).",
+            "",
+            "Hosted providers retire models on a schedule. This is not a "
+            "problem with your API key, and issuing a new key will not fix it "
+            "- the key and the model are separate things.",
+            "",
+            "Pick a current model from https://console.groq.com/docs/models "
+            "and name it in your .env file, on its own line, for example:",
+            "",
+            "    DTV_REA_MODEL=openai/gpt-oss-120b",
+            "",
+            "Whatever you choose must support JSON mode, because every "
+            "extraction this agent makes runs in JSON mode.",
+        ]
+
     if status in (401, 403) or "Authentication" in name or "Permission" in name:
         return [
             "Groq would not accept your API key.",

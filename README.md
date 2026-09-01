@@ -132,8 +132,8 @@ active, `python` means the right Python on either operating system.
 
 ### Step 3 of 3 — Add your Groq API key
 
-The agent uses a language model called Llama 3.3, hosted by a company called
-Groq, to phrase its questions. That needs a key. Get one free at
+The agent uses a language model hosted by a company called Groq to phrase its
+questions. That needs a key. Get one free at
 <https://console.groq.com/keys>.
 
 First copy the example file to a real one:
@@ -363,6 +363,31 @@ The agent could not find your key. Work through these:
 Remember you do not need a key at all for `--stub`, `python -m pytest`, or
 `python -m eval.run_eval --stub`. If you are just trying it out, use those.
 
+### "The model ... does not exist or you do not have access to it"
+
+This is a **404**, and it means the model has been retired by Groq — not that
+anything is wrong with your API key. Issuing a new key will not fix it, because
+the key and the model are two separate settings.
+
+Hosted providers retire models on a schedule. When it happens, pick a current
+one from <https://console.groq.com/docs/models> and name it in your `.env` file
+on its own line:
+
+```
+DTV_REA_MODEL=openai/gpt-oss-120b
+```
+
+That is the only change needed — no code, no reinstall. Whatever you pick must
+support **JSON mode**, because every extraction the agent makes runs in JSON
+mode. Not all models do: `qwen/qwen3.6-27b`, for instance, fails Groq's
+JSON-mode validation on this agent's extraction prompt.
+
+To check what your setup is currently pointed at:
+
+```bash
+python -m dtv_rea.cli --doctor
+```
+
 ### "You have used up your quota" / rate limit reached
 
 A free Groq account has a **daily token allowance of 100,000**. One full
@@ -533,8 +558,8 @@ These are real, and they belong in any writeup of this work.
 
 - **The demo and the tests measure the core, not the model.** A `--stub` run
   proves the routing, the checks, the edge-case rules and the output are
-  correct. It proves nothing whatsoever about how Llama 3.3 actually behaves.
-  Only a live run measures that.
+  correct. It proves nothing whatsoever about how the hosted model actually
+  behaves. Only a live run measures that.
 
 - **Requirement wording is not scored automatically.** The evaluation matches
   requirement text literally. Judging whether a requirement *means* the same as
@@ -557,7 +582,7 @@ dtv_rea/          the agent
   prompts.py      the six prompts and the embedded knowledge base
   graph.py        the state machine
   llm.py          the model interface, and the offline scripted model
-  groq_model.py   Llama 3.3 on Groq
+  groq_model.py   the Groq-hosted model
   persona.py      scripted stakeholders
   runner.py       drives the interview from one pause to the next
   outputs.py      writes the document

@@ -122,9 +122,21 @@ def eval_dir() -> Path:
 # --------------------------------------------------------------------------
 
 #: Groq-hosted model used for every LLM call.
-MODEL_NAME: Final[str] = os.environ.get(
-    "DTV_REA_MODEL", "llama-3.3-70b-versatile"
-)
+#:
+#: Override it without touching code by setting ``DTV_REA_MODEL`` in ``.env``.
+#: Hosted providers retire models on a schedule, so this is the one line that
+#: needs changing when that happens - a retired model returns HTTP 404
+#: ``model_not_found``, which is *not* an authentication problem and is not
+#: fixed by issuing a new API key.
+#:
+#: History: ``llama-3.3-70b-versatile`` was the original choice from the build
+#: specification; Groq decommissioned it on 16 August 2026. Of the two
+#: replacements Groq recommended, ``openai/gpt-oss-120b`` was measured against
+#: this agent's own P5 extraction prompt and ``qwen/qwen3.6-27b`` was rejected:
+#: it fails Groq's JSON-mode validation on that prompt
+#: (``json_validate_failed``), and every extraction in this agent runs in JSON
+#: mode. ``qwen/qwen3.8-27b`` also works and is the fallback.
+MODEL_NAME: Final[str] = os.environ.get("DTV_REA_MODEL", "openai/gpt-oss-120b")
 
 #: Extraction must be reproducible: temperature 0, JSON mode.
 TEMPERATURE_EXTRACT: Final[float] = 0.0
